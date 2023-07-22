@@ -1,0 +1,8 @@
+.env
+*.log
+*.swp
+__pycache__
+audio
+models
+havainnot
+havainnot-peura
