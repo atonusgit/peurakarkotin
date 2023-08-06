@@ -12,7 +12,7 @@ class Gate:
 
     for i in results:
       if "deer" in i["name"]:
-        if i["confidence"] > os.getenv("CONFIDENCE_THRESHOLD"):
+        if i["confidence"] > float(os.getenv("CONFIDENCE_THRESHOLD")):
           helpers.play_audio("audio/beep.wav", 0.25)
           self.certainty = self.certainty + 1
 

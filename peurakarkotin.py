@@ -1,3 +1,4 @@
+import os
 import cv2
 import time
 import asyncio
@@ -41,7 +42,7 @@ if __name__ == "__main__":
     while True:
       if pause_time >= pause_time_limit:
         image = cam.take_and_return_image()
-        results = model.predict(source=image, save=False, save_txt=False, conf=os.getenv("CONFIDENCE_THRESHOLD"), verbose=False)
+        results = model.predict(source=image, save=False, save_txt=False, conf=float(os.getenv("CONFIDENCE_THRESHOLD")), verbose=False)
 
         if results[0].boxes.data.any():
           results_list = mod.get_results(model.names, results)
