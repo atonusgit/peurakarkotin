@@ -4,7 +4,7 @@
 . ~/peurakarkotin/.env
 
 alias ll="ls -lah"
-alias peurakarkotin="python3 detect.py 1>> success.log 2>> error.log &"
+alias peurakarkotin="python3 peurakarkotin.py 1>> success.log 2>> error.log &"
 alias temp="vcgencmd measure_temp"
 
 cd $ROOT_DIRECTORY
