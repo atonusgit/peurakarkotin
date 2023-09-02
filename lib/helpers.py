@@ -18,7 +18,6 @@ def save_plotted_image(results, file_timestamp):
   cv2.imwrite(os.getenv("PEURAHAVAINNOT_DIRECTORY") + filename, res_plotted)
 
 def play_audio(audio_file, volume=0.5):
-  pygame.init()
   pygame.mixer.init()
 
   try:
@@ -37,4 +36,4 @@ def light_toggle(light_id, on_off="off"):
   pistorasiat_user = os.getenv('PISTORASIAT_USERNAME')
   pistorasiat_address = os.getenv('PISTORASIAT_ADDRESS')
 
-  os.system("ssh " + pistorasiat_user + "@" + str(pistorasiat_address) + " 'python3 " + pistorasiat_root + "/remote_control.py " + light_id + " " + on_off + "'")
+  os.system("ssh " + pistorasiat_user + "@" + str(pistorasiat_address) + " 'python3 " + pistorasiat_root + "/remote_control.py " + light_id + " " + on_off + "' > /dev/null 2>&1")
