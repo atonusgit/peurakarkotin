@@ -6,4 +6,8 @@ audio
 models
 havainnot
 havainnot-peura
+havainnot-sensitive
+havainnot-timelapse
 tools
+todropbox
+yolov8x.pt

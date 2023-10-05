@@ -9,21 +9,22 @@ class Gate:
     self.certainty = 0
     self.certainty_reset = 0
 
-  def is_open(self, results, mod, model):
+  def is_open(self, results, mod, model, confidence_threshold=os.getenv("CONFIDENCE_THRESHOLD_SENSITIVE"), ignore_certainty = False):
     gate_is_open = False
 
     if results[0].boxes.data.any():
       results_list = mod.get_results(model.names, results)
 
-      print("certainty: " + str(self.certainty) + '/' + str(os.getenv("CONFIDENCE_THRESHOLD")))
-
       for i in results_list:
         if "deer" in i["name"]:
-          if i["confidence"] > float(os.getenv("CONFIDENCE_THRESHOLD")):
-            helpers.play_audio("audio/beep2.wav", 1)
-            time.sleep(0.1)
-            self.certainty = self.certainty + 1
-            self.certainty_reset = 0
+          if i["confidence"] > float(confidence_threshold):
+            if ignore_certainty:
+              gate_is_open = True
+            else:
+              helpers.play_audio(os.getenv("AUDIO_DETECT_FILE"), os.getenv("AUDIO_DETECT_VOLUME"))
+              time.sleep(0.1)
+              self.certainty = self.certainty + 1
+              self.certainty_reset = 0
 
     self.certainty_reset = self.certainty_reset + 1
 

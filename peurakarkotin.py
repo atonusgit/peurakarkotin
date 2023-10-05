@@ -5,6 +5,7 @@ import asyncio
 from lib.gate import Gate
 from lib.model import Model
 from lib.camera import Camera
+from datetime import datetime
 import lib.helpers as helpers
 from dotenv import load_dotenv
 
@@ -12,7 +13,7 @@ load_dotenv()
 
 def reactions():
   helpers.light_toggle("I", "on")
-  helpers.play_audio("audio/hus3.wav", 1)
+  helpers.play_audio(os.getenv("AUDIO_HUS_FILE"), os.getenv("AUDIO_HUS_VOLUME"))
   helpers.light_toggle("I", "off")
 
 async def async_record_video(file_timestamp):
@@ -36,17 +37,31 @@ if __name__ == "__main__":
   pause_time = 15
   pause_time_limit = pause_time
 
+  timelapse_limit = 15
   time.sleep(5)
 
   try:
     while True:
       if pause_time >= pause_time_limit:
         image = cam.take_and_return_image()
-        results = model.predict(source=image, save=False, save_txt=False, conf=float(os.getenv("CONFIDENCE_THRESHOLD")), verbose=False)
+        results = model.predict(source=image, save=False, save_txt=False, conf=float(os.getenv("CONFIDENCE_THRESHOLD_SENSITIVE")), verbose=False)
+        file_timestamp = time.ctime().replace(" ", "_").replace(":", "-")
 
-        if gate.is_open(results, mod, model):
+        # image 1 - timelapse
+        if timelapse_limit > 15:
+          helpers.save_image(image, file_timestamp, os.getenv("PEURAHAVAINNOT_TIMELAPSE_DIRECTORY") + datetime.now().strftime("%y%m%d") + "/", True)
+          timelapse_limit = 0
+
+        # image 2 - sensitive detection
+        if gate.is_open(results, mod, model, os.getenv("CONFIDENCE_THRESHOLD_SENSITIVE"), True):
+          print("sensitive")
+          helpers.save_image(image, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY") + "deer/")
+          helpers.save_plotted_image(results, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY") + "deer/")
+          helpers.save_cropped_plot_image(results, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY"))
+
+        # image 3 - confident reaction
+        if gate.is_open(results, mod, model, os.getenv("CONFIDENCE_THRESHOLD_REACTION")):
           print(time.ctime() + " - Peurahavainto")
-          file_timestamp = time.ctime().replace(" ", "_").replace(":", "-")
 
           helpers.save_plotted_image(results, file_timestamp)
           helpers.save_image(image, file_timestamp)
@@ -58,8 +73,9 @@ if __name__ == "__main__":
 #          image.show()
 
       else:
-        helpers.play_audio("audio/hum2.wav", 1)
+        helpers.play_audio(os.getenv("AUDIO_PAUSE_FILE"), os.getenv("AUDIO_PAUSE_VOLUME"))
 
+      timelapse_limit = timelapse_limit + 1
       pause_time = pause_time + 1
       time.sleep(1)
 
