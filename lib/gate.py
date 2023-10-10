@@ -21,7 +21,7 @@ class Gate:
             if ignore_certainty:
               gate_is_open = True
             else:
-              helpers.play_audio(os.getenv("AUDIO_DETECT_FILE"), os.getenv("AUDIO_DETECT_VOLUME"))
+              helpers.play_audio(os.getenv("AUDIO_DETECT_FILE"), float(os.getenv("AUDIO_DETECT_VOLUME")))
               time.sleep(0.1)
               self.certainty = self.certainty + 1
               self.certainty_reset = 0

@@ -13,7 +13,7 @@ load_dotenv()
 
 def reactions():
   helpers.light_toggle("I", "on")
-  helpers.play_audio(os.getenv("AUDIO_HUS_FILE"), os.getenv("AUDIO_HUS_VOLUME"))
+  helpers.play_audio(os.getenv("AUDIO_HUS_FILE"), float(os.getenv("AUDIO_HUS_VOLUME")))
   helpers.light_toggle("I", "off")
 
 async def async_record_video(file_timestamp):
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 #          image.show()
 
       else:
-        helpers.play_audio(os.getenv("AUDIO_PAUSE_FILE"), os.getenv("AUDIO_PAUSE_VOLUME"))
+        helpers.play_audio(os.getenv("AUDIO_PAUSE_FILE"), float(os.getenv("AUDIO_PAUSE_VOLUME")))
 
       timelapse_limit = timelapse_limit + 1
       pause_time = pause_time + 1
