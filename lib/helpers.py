@@ -9,12 +9,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_cpu_temp():
-    try:
-        with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
-            temp = f.read().strip()
-        return f"{int(temp) // 1000}C"
-    except FileNotFoundError:
-        return "N/A"
+  try:
+    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+      temp = f.read().strip()
+    return f"{int(temp) // 1000}C"
+  except FileNotFoundError:
+    return "N/A"
 
 def save_image(image, file_timestamp, directory=os.getenv("PEURAHAVAINNOT_DIRECTORY"), add_date = False):
   frame_array = cv2.cvtColor(numpy.array(image), cv2.COLOR_RGB2BGR)
