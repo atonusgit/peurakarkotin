@@ -8,13 +8,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def get_cpu_temp():
+    try:
+        with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+            temp = f.read().strip()
+        return f"{int(temp) // 1000}C"
+    except FileNotFoundError:
+        return "N/A"
+
 def save_image(image, file_timestamp, directory=os.getenv("PEURAHAVAINNOT_DIRECTORY"), add_date = False):
   frame_array = cv2.cvtColor(numpy.array(image), cv2.COLOR_RGB2BGR)
   filename = f'peura_{file_timestamp}.jpg'
 
   # Add a date to the image
   if add_date:
-    date_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    date_text = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " CPU=" + get_cpu_temp()
     font = cv2.FONT_HERSHEY_SIMPLEX
     cv2.putText(frame_array, date_text, (10 + 2, 50 + 1), font, 1, (0, 0, 0), 2, cv2.LINE_AA)
     cv2.putText(frame_array, date_text, (10, 50), font, 1, (255, 255, 255), 2, cv2.LINE_AA)
