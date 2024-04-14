@@ -16,7 +16,7 @@ class Gate:
       results_list = mod.get_results(model.names, results)
 
       for i in results_list:
-        if "deer" in i["name"]:
+        if "deer" in i["name"] or "Deer" in i["name"]:
           if i["confidence"] > float(confidence_threshold):
             if ignore_certainty:
               gate_is_open = True
