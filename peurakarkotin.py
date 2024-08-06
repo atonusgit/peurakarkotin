@@ -67,6 +67,7 @@ if __name__ == "__main__":
           helpers.save_image(image, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY") + "deer/")
           helpers.save_plotted_image(results, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY") + "deer/")
           helpers.save_cropped_plot_image(results, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY"))
+          helpers.save_yolo_format(results, file_timestamp, os.getenv("PEURAHAVAINNOT_SENSITIVE_DETECTION_DIRECTORY") + "deer/")
 
         # image 3 - confident reaction
         if gate.is_open(results, mod, model, os.getenv("CONFIDENCE_THRESHOLD_REACTION")):
@@ -74,6 +75,7 @@ if __name__ == "__main__":
 
           helpers.save_plotted_image(results, file_timestamp)
           helpers.save_image(image, file_timestamp)
+          helpers.save_yolo_format(results, file_timestamp)
 
           cam.stop_camera()
           asyncio.run(react(file_timestamp))
@@ -83,6 +85,9 @@ if __name__ == "__main__":
 
       else:
         helpers.play_audio(os.getenv("AUDIO_PAUSE_FILE"), float(os.getenv("AUDIO_PAUSE_VOLUME")))
+
+      if os.getenv("TEST_IMAGE") is not None:
+        break
 
       timelapse_limit = timelapse_limit + 1
       pause_time = pause_time + 1

@@ -43,6 +43,17 @@ def save_cropped_plot_image(results, file_timestamp, directory=os.getenv("PEURAH
   filename = f'peura_{file_timestamp}_cropped_plot.jpg'
   results[0].save_crop(directory, filename)
 
+def save_yolo_format(results, file_timestamp, directory=os.getenv("PEURAHAVAINNOT_DIRECTORY")):
+    txt_filename = os.path.join(directory, f"peura_{file_timestamp}.txt")
+
+    with open(txt_filename, 'w') as f:
+        for result in results:
+            boxes = result.boxes
+            for box in boxes:
+                class_id = int(box.cls)
+                x_center, y_center, width, height = box.xywhn.tolist()[0]
+                f.write(f"{class_id} {x_center} {y_center} {width} {height}\n")
+  
 def play_audio(audio_file, volume=0.5):
   if os.getenv('USE_AUDIO') == "False":
     print('Audio is disabled')
