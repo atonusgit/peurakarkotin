@@ -44,6 +44,14 @@ if __name__ == "__main__":
     while True:
       if pause_time >= pause_time_limit:
         image = cam.take_and_return_image()
+
+        if image is False:
+          if os.getenv("TEST_IMAGE") is None:
+            print("Camera is disabled, and test image not set")
+            exit(0)
+
+          image = cv2.imread(os.getenv("TEST_IMAGE"))
+
         results = model.predict(source=image, save=False, save_txt=False, conf=float(os.getenv("CONFIDENCE_THRESHOLD_SENSITIVE")), verbose=False)
 #        file_timestamp = time.ctime().replace(" ", "_").replace(":", "-")
         file_timestamp = datetime.now().strftime("%y%m%d_%H%M%S")
