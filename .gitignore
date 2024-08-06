@@ -11,3 +11,5 @@ havainnot-timelapse
 tools
 todropbox
 yolov8x.pt
+.DS_Store
+test_images
