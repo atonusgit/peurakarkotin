@@ -44,6 +44,10 @@ def save_cropped_plot_image(results, file_timestamp, directory=os.getenv("PEURAH
   results[0].save_crop(directory, filename)
 
 def play_audio(audio_file, volume=0.5):
+  if os.getenv('USE_AUDIO') == "False":
+    print('Audio is disabled')
+    return
+
   pygame.mixer.init()
 
   try:
@@ -58,6 +62,10 @@ def play_audio(audio_file, volume=0.5):
     print(f"Error playing the sound: {e}")
 
 def light_toggle(light_id, on_off="off"):
+  if os.getenv('USE_LIGHT') == "False":
+    print('Light is disabled')
+    return
+
   pistorasiat_root = os.getenv('PISTORASIAT_ROOT_DIRECTORY')
   pistorasiat_user = os.getenv('PISTORASIAT_USERNAME')
   pistorasiat_address = os.getenv('PISTORASIAT_ADDRESS')
