@@ -53,7 +53,7 @@ def save_yolo_format(results, file_timestamp, directory=os.getenv("PEURAHAVAINNO
                 class_id = int(box.cls)
                 x_center, y_center, width, height = box.xywhn.tolist()[0]
                 f.write(f"{class_id} {x_center} {y_center} {width} {height}\n")
-  
+
 def play_audio(audio_file, volume=0.5):
   if os.getenv('USE_AUDIO') == "False":
     print('Audio is disabled')
@@ -82,3 +82,11 @@ def light_toggle(light_id, on_off="off"):
   pistorasiat_address = os.getenv('PISTORASIAT_ADDRESS')
 
   os.system("ssh " + pistorasiat_user + "@" + str(pistorasiat_address) + " 'python3 " + pistorasiat_root + "/remote_control.py " + light_id + " " + on_off + "' > /dev/null 2>&1")
+
+def hydrostrike_toggle(true_false="false"):
+  hydrostrike_address = os.getenv('HYDROSTRIKE_ADDRESS')
+  hydrostrike_username = os.getenv('HYDROSTRIKE_USERNAME')
+  hydrostrike_password = os.getenv('HYDROSTRIKE_PASSWORD')
+
+#  os.system("echo 'vastaus: " + true_false + "'")
+  os.system("curl --anyauth -u " + hydrostrike_username + ":" + hydrostrike_password + " '" + hydrostrike_address + "/rpc/Switch.Set?id=0&on=" + true_false + "'")

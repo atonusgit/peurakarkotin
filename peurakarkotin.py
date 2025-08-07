@@ -14,6 +14,9 @@ load_dotenv()
 def reactions():
   helpers.light_toggle("I", "on")
   helpers.play_audio(os.getenv("AUDIO_HUS_FILE"), float(os.getenv("AUDIO_HUS_VOLUME")))
+  helpers.hydrostrike_toggle("true")
+  time.sleep(7)
+  helpers.hydrostrike_toggle("false")
   helpers.light_toggle("I", "off")
 
 async def async_record_video(file_timestamp):
