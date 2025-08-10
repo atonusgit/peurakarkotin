@@ -83,6 +83,9 @@ if __name__ == "__main__":
           cam.stop_camera()
           asyncio.run(react(file_timestamp))
           cam.start_still_camera()
+
+          os.system("curl -d 'Peurahavainto' " + os.getenv("NOTIFICATION_TARGET"))
+
           pause_time = 0
 #          image.show()
 
